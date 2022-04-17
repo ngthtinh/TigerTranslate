@@ -1,20 +1,22 @@
+# Import libraries
 import flask
-from flask import request
-from flask import json
-from flask_cors import CORS
 
-# create a variable named app
+
+# Create a variable named app
 app = flask.Flask(__name__) 
-CORS(app)
 
-# function predict is called at each request  
-@app.route("/predict", methods=["POST"])
+
+# Reponse for resquests
+@app.route('/')
+def home():
+    return flask.render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
 def predict():
-    print(request.data)
-
-    response = {"output": 'cat'}
-    return flask.jsonify(response) # return it as json
+    output = next(flask.request.form.values())
+    return flask.render_template('index.html', prediction_text=output)
 
 
+# Entry point
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run()
